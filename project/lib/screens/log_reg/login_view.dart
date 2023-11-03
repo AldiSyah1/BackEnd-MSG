@@ -51,40 +51,43 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> loginUser(BuildContext context) async {
     final provLogin = Provider.of<UsersProvider>(context, listen: false);
+    final usernameText = username.text;
     final emailText = email.text;
     final passwordText = password.text;
 
-    if (emailText.isEmpty || passwordText.isEmpty) {
-      showSnackbar(context, 'Mohon masukkan email dan password!',
-          ColorPalette.textColor);
+    if (usernameText.isEmpty || emailText.isEmpty || passwordText.isEmpty) {
+      showSnackbar(
+          context, 'Mohon masukkan akun anda !', ColorPalette.textColor);
       return;
     }
 
+    final user = provLogin.usersList.firstWhere(
+      (user) =>
+          user.username == usernameText &&
+          user.email == emailText &&
+          user.password == passwordText,
+    );
     try {
-      UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailText,
-        password: passwordText,
-      );
-
-      if (userCredential.user != null) {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: emailText, password: passwordText);
+      if (user != null) {
         final prefs = await SharedPreferences.getInstance();
-        await prefs.setBool('keepLoggedIn', true);
-        await prefs.setString('userId', userCredential.user!.uid);
-        provLogin.userDoLogin(userCredential.user!.uid);
+        await prefs.setBool(
+            'keepLoggedIn', true); // Ubah nilai menjadi true saat login.
+        await prefs.setString(
+            'userId', user.id); // Menyimpan user.id ke dalam SharedPreferences.
+        provLogin.userDoLogin(user.id);
         Navigator.pushReplacementNamed(context, "/homePage");
       } else {
-        showSnackbar(
-            context,
-            'Terjadi kesalahan saat login, periksa kembali email dan password Anda',
-            ColorPalette.textColor);
+        showSnackbar(context, 'User Tidak Ditemukan!', ColorPalette.textColor);
       }
     } catch (e) {
-      print('Error: $e');
+      print('Error : $e');
       showSnackbar(
-          context,
-          'Autentikasi Gagal, periksa email dan password Anda.',
-          ColorPalette.textColor);
+        context,
+        'Autentikasi Gagal, periksa email dan password Anda.',
+        ColorPalette.textColor,
+      );
     }
   }
 
