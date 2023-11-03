@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "344832937326",
+    "project_id": "msggudang-d4acc",
+    "storage_bucket": "msggudang-d4acc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:344832937326:android:db0b5d7b67608451d6857f",
+        "android_client_info": {
+          "package_name": "com.example.project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDT821qugxONnwfuRq1EhcmRz2ccq_CeCg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
